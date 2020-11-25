@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import Navbar from './components/layout/Navbar';
 import Events from './components/events/Events';
-import Search from './components/events/Search'
+import Search from './components/events/Search';
+import Alert from './components/layout/Alert';
 import axios from 'axios';
 
 import './App.css';
@@ -10,21 +11,9 @@ export class App extends Component {
 
   state = {
     events: [],
-    loading: false
+    loading: false,
+    alert: null
   }
-
-  // componentDidMount() {
-  //   axios.get('https://app.ticketmaster.com/discovery/v2/events.json?apikey=B0JQHemR4Q569W9GcjHfhygRBRU3RvrL&city=Dublin').then(res => console.log(res.data));
-  // }
-  // async componentDidMount() {
-  //   this.setState({ loading: true });
-
-  //   const res = await axios.get(`https://app.ticketmaster.com/discovery/v2/events.json?apikey=HDXOsLFjKv0z0sSyeUhUh1nLe0TB7M7A&city=Dublin`);
-  //   console.log(res.data._embedded.events);
-
-  //   this.setState({ events: res.data._embedded.events, loading: false });
-
-  // }
 
   searchEvents = async (text) => {
     this.setState({ loading: true });
@@ -40,17 +29,29 @@ export class App extends Component {
     this.setState({ events: [], loading: false })
   }
 
+  setAlert = (msg, type) => {
+    this.setState({ alert: { msg: msg, type: type } })
+
+    setTimeout(() => {
+      this.setState({ alert: null })
+    }, 2000)
+  }
+
   render() {
     const { events, loading} = this.state;
     return (
-      <div>
+      <div className="App">
         <Navbar />
-        <Search 
-          searchEvents={this.searchEvents} 
-          clearEvents={this.clearEvents} 
-          showClear={events.length > 0 ? true : false}
-          />
-        <Events loading={loading} events={events} />
+        <div className="container">
+          <Alert alert={this.state.alert} />
+          <Search 
+            searchEvents={this.searchEvents} 
+            clearEvents={this.clearEvents} 
+            showClear={events.length > 0 ? true : false}
+            setAlert={this.setAlert}
+            />
+          <Events loading={loading} events={events} />
+        </div>
       </div>
     )
   }

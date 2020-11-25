@@ -8,8 +8,13 @@ export class Search extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.searchEvents(this.state.text);
-        this.setState({ text: '' })
+        if(this.state.text === '') {
+            // 2nd parameter is the type of alert(danger, success, etc)
+            this.props.setAlert('Please enter a city', 'light')
+        } else {
+            this.props.searchEvents(this.state.text);
+            this.setState({ text: '' })
+        }
     }
     // This method will fire every time a user inserts a character in the search bar
     // Using [] brackets to tarhet that specific event in case there's mutltiple onChange
@@ -44,7 +49,8 @@ export class Search extends Component {
     static propTypes = {
         searchEvents: PropTypes.func.isRequired,
         clearEvents: PropTypes.func.isRequired,
-        showClear: PropTypes.bool.isRequired
+        showClear: PropTypes.bool.isRequired,
+        setAlert: PropTypes.func.isRequired
     }
 }
 
