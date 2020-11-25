@@ -1,25 +1,38 @@
-import logo from './logo.svg';
+import React, { Component } from 'react'
+import Navbar from './components/layout/Navbar';
+import Events from './components/events/Events';
+import axios from 'axios';
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export class App extends Component {
+
+  state = {
+    events: [],
+    loading: false
+  }
+
+  // componentDidMount() {
+  //   axios.get('https://app.ticketmaster.com/discovery/v2/events.json?apikey=B0JQHemR4Q569W9GcjHfhygRBRU3RvrL&city=Dublin').then(res => console.log(res.data));
+  // }
+  async componentDidMount() {
+    this.setState({ loading: true });
+
+    const res = await axios.get(`https://app.ticketmaster.com/discovery/v2/events.json?apikey=HDXOsLFjKv0z0sSyeUhUh1nLe0TB7M7A&city=Dublin`);
+    console.log(res.data._embedded.events);
+
+    this.setState({ events: res.data._embedded.events, loading: false });
+
+  }
+
+  render() {
+    return (
+      <div>
+        <Navbar />
+        <Events loading={this.state.loading} events={this.state.events} />
+      </div>
+    )
+  }
 }
 
-export default App;
+export default App
