@@ -8,7 +8,7 @@ export class Search extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.searchUsers(this.state.text);
+        this.props.searchEvents(this.state.text);
         this.setState({ text: '' })
     }
     // This method will fire every time a user inserts a character in the search bar
@@ -19,14 +19,15 @@ export class Search extends Component {
     }
 
     render() {
+        const { text } = this.state;
         return (
             <div>
                 <form onSubmit={this.onSubmit} className="form" >
                 <input 
                     type="text" 
                     name="text" 
-                    placeholder="Search Users..." 
-                    value={this.state.text} 
+                    placeholder="Search Events..." 
+                    value={text} 
                     onChange={this.onChange}
                 /> 
                 <input 
@@ -35,12 +36,15 @@ export class Search extends Component {
                     className="btn btn-dark btn-block" 
                 /> 
                 </form>
+                {this.props.showClear && <button className="btn btn-light btn-block" onClick={this.props.clearEvents}>Clear</button>}
             </div>
         )
     }
 
     static propTypes = {
-        searchUsers: PropTypes.func.isRequired
+        searchEvents: PropTypes.func.isRequired,
+        clearEvents: PropTypes.func.isRequired,
+        showClear: PropTypes.bool.isRequired
     }
 }
 
