@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Navbar from './components/layout/Navbar';
 import Events from './components/events/Events';
+import Search from './components/events/Search'
 import axios from 'axios';
 
 import './App.css';
@@ -29,6 +30,7 @@ export class App extends Component {
     return (
       <div>
         <Navbar />
+        <Search />
         <Events loading={this.state.loading} events={this.state.events} />
       </div>
     )
